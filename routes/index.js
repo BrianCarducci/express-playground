@@ -7,9 +7,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/students', (req, res, next) => {
-
-  //Get all students
+//Get all students
+router.get('/students', (req, res) => {
   req.db.collection('students').find({}).toArray((err, result) => {
     if (err) console.log('error occurred', err);
     res.send(result);
@@ -18,42 +17,20 @@ router.get('/students', (req, res, next) => {
 });
 
 //Get a student by id
-router.get('/students/:doo', (req, res) => {
-  res.send(req.params.doo);
+router.get('/students/:id', (req, res) => {
+  req.db.collection('students').findOne( { _id: req.params.id }, (err, result) => {
+    res.send(result);
+  });
 });
 
-  // var MongoClient = mongodb.MongoClient;
-  // var url = 'mongodb://localhost:27017/school';
-  // MongoClient.connect(url, (err, client) => {
-  //   if (err) {
-  //     console.log('Unable to connect to client, ', err);
-  //   } else {
-  //     console.log('Connected!');
-  //     var db = client.db('school');
-  //     var collection = db.collection('students');
-  //     collection.find({}).toArray((err, result) => {
-  //       if (err) {
-  //         res.send(err);
-  //       } else if (result) {
-  //         res.render('studentlist', {
-  //           "studentList" : result
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-  // res.render('studentlist', {
-  //   "studentList" : app.
-  // });
-
-
+//Insert a student
 router.post('/students', (req, res, next) => {
   req.body._id = req.app.records + 1;
   req.db.collection('students').insert(req.body, (err, records) => {
     if (err) next(err);
     else req.app.records++;
   });
-  req.db.collection('students').find({}).limit(1).sort({$natural:-1}).toArray((err, result) => {
+  req.db.collection('students').find({}).limit(1).sort( { $natural: -1 } ).toArray((err, result) => {
     if (err) next(err);
     res.send({
       message: 'insertion successful',
@@ -62,10 +39,12 @@ router.post('/students', (req, res, next) => {
   });
 });
 
-router.delete('/students/:name', (req, res) => {
-  req.db.collection('students').deleteMany({name: req.params.name});
+//Delete a student by id
+router.delete('/students/:id', (req, res) => {
+  req.db.collection('students').remove( { _id: req.params.id } );
 });
 
+//Update a student by id
 router.put('/students:id', (req, res) => {
 
 });
