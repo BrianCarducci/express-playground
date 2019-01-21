@@ -20,7 +20,7 @@ mongodb://USERNAME:PASSWORD@myShard-shard-00-00-lbofd.mongodb.net:27017,myShard-
 
 //app.use(expressMongoDb('mongodb+srv://user1:CoffeeBoi22@myfirstcluster-vbjxo.mongodb.net/school?retryWrites=truel'));
 //app.use(expressMongoDb('mongodb://user1:CoffeeBoi22@myShard-shard-00-00-lbofd.mongodb.net:27017,myShard-shard-00-01-lbofd.mongodb.net:27017,myShard-shard-00-02-lbofd.mongodb.net:27017/school?ssl=true&replicaSet=myShard-shard-0&authSource=admin'));
-app.use(expressMongoDb('mongodb://localhost:27017/school'));
+// app.use(expressMongoDb('mongodb://localhost:27017/school'));
 app.use(logger('dev'));
 
 app.use(express.json());
@@ -48,8 +48,8 @@ app.use(function(err, req, res, next) {
 });
 
 // Setting up auto-increment id
-var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/school';
+// var MongoClient = require('mongodb').MongoClient;
+// var url = 'mongodb://localhost:27017/school';
 
 // MongoClient.connect(url, (err, client) => {
 //     if (err) {
@@ -63,16 +63,19 @@ var url = 'mongodb://localhost:27017/school';
 //     }
 //   });
 
-MongoClient.connect(url, (err, client) => {
-  if (err) {
-    console.error(err);
-  } else {
-    var db = client.db('school');
-    db.collection('students').find().limit(1).sort({$natural:-1}).toArray((err, result) => {
-      app.records = result[0]._id;
-      console.log(app.records);
-    })
-  }
-});
+// MongoClient.connect(url, (err, client) => {
+//   if (err) {
+//     console.error(err);
+//   } else {
+//     var db = client.db('school');
+//     db.collection('students').find().limit(1).sort({$natural:-1}).toArray((err, result) => {
+//       if (result === []) {
+//         app.records = 0;
+//       } else {
+//         app.records = result[0]._id;
+//       }
+//     });
+//   }
+// });
 
 module.exports = app;
